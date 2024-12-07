@@ -57,17 +57,35 @@ int main()
 
     auto start = chrono::high_resolution_clock::now();
     string filename = "input.in";
-    vector<long long int> targets;
-    vector<vector<int>> nums;
+
+    long long int target;
+    vector<int> nums;
+
     long long int answer = 0;
 
-    read_file(filename, targets, nums);
+    string num;
+    int colon;
 
-    for (int i = 0; i < targets.size(); ++i)
+    ifstream inFile(filename);
+    for (string line; getline(inFile, line);)
     {
-        if (valid_ops(targets[i], nums[i]))
-            answer += targets[i];
+        colon = line.find(':');
+        target = stoll(line.substr(0, colon));
+
+        stringstream ss(line.substr(colon + 2));
+        while (getline(ss, num, ' '))
+        {
+            nums.push_back(stoi(num));
+        }
+
+        if (valid_ops(target, nums))
+        {
+            answer += target;
+        }
+        nums = {};
     }
+
+    inFile.close();
 
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::nanoseconds>(end - start);
