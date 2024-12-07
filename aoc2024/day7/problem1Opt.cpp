@@ -7,31 +7,6 @@
 
 using namespace std;
 
-void read_file(const string &filename, vector<long long int> &targets, vector<vector<int>> &nums)
-{
-    ifstream inFile(filename);
-
-    for (string line; getline(inFile, line);)
-    {
-        int colon = line.find(':');
-
-        long long int target = stoll(line.substr(0, colon));
-
-        vector<int> numList;
-        string num;
-        stringstream ss(line.substr(colon + 2));
-        while (getline(ss, num, ' '))
-        {
-            numList.push_back(stoi(num));
-        }
-
-        targets.push_back(target);
-        nums.push_back(numList);
-    }
-
-    inFile.close();
-}
-
 bool valid_ops_runner(long long target, const vector<int> &nums, int index)
 {
     if (index == 0)
@@ -60,13 +35,13 @@ int main()
 
     long long int target;
     vector<int> nums;
-
     long long int answer = 0;
 
     string num;
     int colon;
 
     ifstream inFile(filename);
+
     for (string line; getline(inFile, line);)
     {
         colon = line.find(':');
