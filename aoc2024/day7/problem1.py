@@ -1,3 +1,5 @@
+from time import perf_counter_ns
+
 input_file = "./input.in"
 
 with open(input_file, "r") as file:
@@ -22,12 +24,12 @@ def valid_ops(target, nums):
 
 
 total_possible = 0
+start_time = perf_counter_ns()
 for i in range(len(data)):
     if valid_ops(targets[i], nums[i]):
         total_possible += targets[i]
 
-print(total_possible)
+end_time = perf_counter_ns()
 
-# i = -1
-# ans = valid_ops2(targets[i], nums[i])
-# print(ans)
+print("Time taken to execute:", (end_time - start_time) / 1000, "us")
+print("Answer:", total_possible)
