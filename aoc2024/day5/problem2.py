@@ -1,5 +1,8 @@
 from pprint import pprint
 from functools import cmp_to_key
+from time import perf_counter
+
+start_time = perf_counter()
 
 input_file = "./input.in"
 
@@ -48,4 +51,7 @@ for dd in print_list:
         dd = sort_worng(dd)
         final_sum += dd[len(dd) // 2]
 
+end_time = perf_counter()
+
 print(final_sum)
+print("time taken : ", end_time - start_time)
