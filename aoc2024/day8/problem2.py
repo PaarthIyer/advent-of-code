@@ -3,34 +3,34 @@ import numpy as np
 
 
 ##########################
-def twodarray(arr):
-    return list(tuple(map(int, x)) for x in arr)
-
-
-def get_anitnodes(coords_array, m, n) -> set:
+def get_antinode(coords_array, m, n) -> set:
     valid_antinodes = set()
-    mult = 0
     for i, a in enumerate(coords_array[:-1]):
-        mask = True
         b_array = coords_array[i + 1 :]
+        mult = 0
 
-        while np.any(mask):
+        while True:
             temp1 = (a - b_array) * mult + a
             temp2 = (b_array - a) * mult + b_array
-            potential = np.vstack([temp1, temp2])
+            potential = np.concatenate([temp1, temp2], 0)
 
-            mask = np.all((0 <= potential) & (potential < [m, n]), axis=1)
+            mask = (
+                (potential[:, 0] >= 0)
+                & (potential[:, 0] < m)
+                & (potential[:, 1] >= 0)
+                & (potential[:, 1] < n)
+            )
 
-            valid_antinodes.update(twodarray(potential[mask]))
+            if not np.any(mask):
+                break
+
+            valid_antinodes.update(map(tuple, potential[mask]))
             mult += 1
-        mult = 0
 
     return valid_antinodes
 
 
 ##########################
-
-
 def main():
     start_time = perf_counter_ns()
 
@@ -40,7 +40,6 @@ def main():
         data = file.read().splitlines()
 
     nodes = {}
-
     for i, line in enumerate(data):
         for j, cell in enumerate(line):
             if cell != ".":
@@ -54,7 +53,7 @@ def main():
     antinodes = set()
 
     for node in nodes:
-        antinodes.update(get_anitnodes(nodes[node], m, n))
+        antinodes.update(get_antinode(nodes[node], m, n))
 
     end_time = perf_counter_ns()
 
