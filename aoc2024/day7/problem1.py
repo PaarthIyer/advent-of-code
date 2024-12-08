@@ -1,5 +1,6 @@
 from time import perf_counter_ns
 
+start_time = perf_counter_ns()
 input_file = "./input.in"
 
 with open(input_file, "r") as file:
@@ -24,7 +25,6 @@ def valid_ops(target, nums):
 
 
 total_possible = 0
-start_time = perf_counter_ns()
 for i in range(len(data)):
     if valid_ops(targets[i], nums[i]):
         total_possible += targets[i]
